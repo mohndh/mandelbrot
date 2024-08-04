@@ -3,7 +3,7 @@
 // Learn more at https://projectf.io
 
 `default_nettype none
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 // three-cycle address calculation
 // NB. doesn't handle coordinate wrapping using offsets
