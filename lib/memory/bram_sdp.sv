@@ -3,7 +3,7 @@
 // Learn more at https://projectf.io
 
 `default_nettype none
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module bram_sdp #(
     parameter WIDTH=8, 
