@@ -1,7 +1,7 @@
 ## Project F: Verilator/SDL Makefile
 ## (C)2023 Will Green, open source hardware released under the MIT License
 
-VFLAGS = -O3 --x-assign fast --x-initial fast --noassert
+VFLAGS = -O3 --x-assign fast --x-initial fast --noassert --timescale 1ns/1ps
 SDL_CFLAGS = `sdl2-config --cflags`
 SDL_LDFLAGS = `sdl2-config --libs`
 
