@@ -3,7 +3,7 @@
 // Learn more at https://projectf.io/verilog-lib/
 
 `default_nettype none
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module mul #(
     parameter WIDTH=25,  // width of numbers in bits (integer and fractional)
