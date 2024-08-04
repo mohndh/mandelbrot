@@ -2,8 +2,6 @@
 // (C)2023 Will Green, Open source hardware released under the MIT License
 // Learn more at https://projectf.io/verilog-lib/
 
-`default_nettype none
-`timescale 1ns / 1ps
 
 module mul #(
     parameter WIDTH=8,  // width of numbers in bits (integer and fractional)
