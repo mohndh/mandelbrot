@@ -10,8 +10,6 @@ class mul(val width: Int = 8, val fbits: Int = 4) extends Module {
   val half = (1 << (fbits - 1))
 
   val io = IO(new Bundle {
-    val clk = Input(Clock())
-    val rst = Input(Bool())
     val start = Input(Bool())
     val busy = Output(Bool())
     val done = Output(Bool())
@@ -83,14 +81,14 @@ class mul(val width: Int = 8, val fbits: Int = 4) extends Module {
     }
   }
 
-  when(io.rst) {
+  /*when(io.rst) {
     state := State.idle
     io.busy := false.B
     io.done := false.B
     io.valid := false.B
     io.ovf := false.B
     io.valOut := 0.S
-  }
+  }*/
 }
 
 /*object mul extends App {
