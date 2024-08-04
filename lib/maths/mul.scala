@@ -3,7 +3,7 @@ import chisel3.util._
 import chisel3.stage.{ChiselStage, ChiselGeneratorAnnotation}
 import chisel3.experimental.ChiselEnum 
 
-class mul(val width: Int = 8, val fbits: Int = 4) extends Module {
+class mul(val width: Int = 25, val fbits: Int = 21) extends Module {
   val ibits = width - fbits
   val msb = 2 * width - ibits - 1
   val lsb = width - ibits
