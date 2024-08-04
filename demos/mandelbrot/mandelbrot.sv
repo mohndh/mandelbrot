@@ -28,7 +28,7 @@ module mandelbrot #(
     // fixed-point multiplication module
     logic signed [FP_WIDTH-1:0] mul_a, mul_b, mul_val, mul_val_p;
     logic mul_start, mul_done;
-    mul #(.WIDTH(FP_WIDTH), .FBITS(FP_WIDTH - FP_INT)) mul_inst (
+    mul #() mul_inst (
         .clk,
         .rst,
         .start(mul_start),
