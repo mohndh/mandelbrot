@@ -2,8 +2,8 @@
 // (C)2023 Will Green, open source hardware released under the MIT License
 // Learn more at https://projectf.io/posts/mandelbrot-set-verilog/
 
-/*`default_nettype none
-`timescale 1ns / 1ps*/
+`default_nettype none
+//`timescale 1ns / 1ps
 
 module top_mandel #(parameter CORDW=16) (  // signed coordinate width (bits)
     input  wire logic clk_pix,      // pixel clock
