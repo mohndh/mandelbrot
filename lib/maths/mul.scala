@@ -31,7 +31,7 @@ class mul(val width: Int = 8, val fbits: Int = 4) extends Module {
   val round = RegInit(false.B)
   val even = RegInit(false.B)
 
-   object State extends ChiselEnum {
+  object State extends ChiselEnum {
     val idle, calc, trunc, roundState = Value
   }
   //val idle :: calc :: trunc :: roundState :: Nil = Enum(4)
