@@ -1,101 +1,104 @@
-// Project F Library - Multiplication: Signed Fixed-Point with Gaussian Rounding
-// (C)2023 Will Green, Open source hardware released under the MIT License
-// Learn more at https://projectf.io/verilog-lib/
+import chisel3._
+import chisel3.util._
+import chisel3.stage.{ChiselStage, ChiselGeneratorAnnotation}
+import chisel3.experimental.ChiselEnum 
 
-module mul #(
-    parameter WIDTH=8,  // width of numbers in bits (integer and fractional)
-    parameter FBITS=4   // fractional bits within WIDTH
-    ) (
-    input wire logic clk,    // clock
-    input wire logic rst,    // reset
-    input wire logic start,  // start calculation
-    output     logic busy,   // calculation in progress
-    output     logic done,   // calculation is complete (high for one tick)
-    output     logic valid,  // result is valid
-    output     logic ovf,    // overflow
-    input wire logic signed [WIDTH-1:0] a,   // multiplier (factor)
-    input wire logic signed [WIDTH-1:0] b,   // mutiplicand (factor)
-    output     logic signed [WIDTH-1:0] val  // result value: product
-    );
+class mul(val width: Int = 8, val fbits: Int = 4) extends Module {
+  val ibits = width - fbits
+  val msb = 2 * width - ibits - 1
+  val lsb = width - ibits
+  val half = (1 << (fbits - 1))
 
-    // for selecting result
-    localparam IBITS = WIDTH - FBITS;
-    localparam MSB = 2*WIDTH - IBITS - 1;
-    localparam LSB = WIDTH - IBITS;
+  val io = IO(new Bundle {
+    val clk = Input(Clock())
+    val rst = Input(Bool())
+    val start = Input(Bool())
+    val busy = Output(Bool())
+    val done = Output(Bool())
+    val valid = Output(Bool())
+    val ovf = Output(Bool())
+    val a = Input(SInt(width.W))
+    val b = Input(SInt(width.W))
+    val valOut = Output(SInt(width.W))
+  })
 
-    // for rounding
-    localparam HALF = {1'b1, {FBITS-1{1'b0}}};
+  val sigDiff = RegInit(false.B)
+  val a1 = Reg(SInt(width.W))
+  val b1 = Reg(SInt(width.W))
+  val prodT = Reg(SInt(width.W))
+  val prod = Reg(SInt((2 * width).W))
+  val rbits = Reg(UInt(fbits.W))
+  val round = RegInit(false.B)
+  val even = RegInit(false.B)
 
-    logic sig_diff;  // signs difference of inputs
-    logic signed [WIDTH-1:0] a1, b1;  // copy of inputs
-    logic signed [WIDTH-1:0] prod_t;  // unrounded, truncated product
-    logic signed [2*WIDTH-1:0] prod;  // full product
-    logic [FBITS-1:0] rbits;          // rounding bits
-    logic round;  // rounding required
-    logic even;   // even number
+   object State extends ChiselEnum {
+    val idle, calc, trunc, roundState = Value
+  }
+  //val idle :: calc :: trunc :: roundState :: Nil = Enum(4)
+  val state = RegInit(State.idle)
 
-    // calculation state machine
-    enum {IDLE, CALC, TRUNC, ROUND} state;
-    always_ff @(posedge clk) begin
-        done <= 0;
-        case (state)
-            CALC: begin
-                state <= TRUNC;
-                prod <= a1 * b1;
-            end
-            TRUNC: begin
-                // need to check for overflow (need to look at MSB)
-                state <= ROUND;
-                prod_t <= prod[MSB:LSB];
-                rbits  <= prod[FBITS-1:0];
-                round  <= prod[FBITS-1+:1];
-                even  <= ~prod[FBITS+:1];
-            end
-            ROUND: begin  // round half to even
-                state <= IDLE;
-                busy <= 0;
-                done <= 1;
+  io.done := false.B
+  io.busy := false.B
+  io.valid := false.B
+  io.ovf := false.B
+  io.valOut := 0.S
 
-                // Gaussian rounding
-                val <= (round && !(even && rbits == HALF)) ? prod_t + 1 : prod_t;
+  switch(state) {
+    is(State.idle) {
+      when(io.start) {
+        state := State.calc
+        a1 := io.a
+        b1 := io.b
+        sigDiff := io.a(width - 1) ^ io.b(width - 1)
+        io.busy := true.B
+      }
+    }
+    is(State.calc) {
+      state := State.trunc
+      prod := a1 * b1
+    }
+    is(State.trunc) {
+      state := State.roundState
+      prodT := prod(msb, lsb)
+      rbits := prod(fbits - 1, 0)
+      round := prod(fbits)
+      even := !prod(fbits + 1)
+    }
+    is(State.roundState) {
+      state := State.idle
+      io.busy := false.B
+      io.done := true.B
 
-                // overflow
-                if (sig_diff == prod_t[WIDTH-1+:1] &&  // compare input and answer sign
-                    (prod[2*WIDTH-1:MSB+1] == '0 || prod[2*WIDTH-1:MSB+1] == '1)  // overflow bits
-                ) begin
-                    valid <= 1;
-                    ovf <= 0;
-                end else begin
-                    valid <= 0;
-                    ovf <= 1;
-                end
-            end
-            default: begin
-                if (start) begin
-                    state <= CALC;
-                    a1 <= a;  // register input a
-                    b1 <= b;  // register input b
-                    sig_diff <= (a[WIDTH-1+:1] ^ b[WIDTH-1+:1]);  // register input sign difference
-                    busy <= 1;
-                    ovf <= 0;
-                end
-            end
-        endcase
-        if (rst) begin
-            state <= IDLE;
-            busy <= 0;
-            done <= 0;
-            valid <= 0;
-            ovf <= 0;
-            val <= 0;
-        end
-    end
+      // Gaussian rounding
+      io.valOut := Mux(round && !(even && rbits === half.U), prodT + 1.S, prodT)
 
-    // generate waveform file with cocotb
-    `ifdef COCOTB_SIM
-    initial begin
-        $dumpfile($sformatf("%m.vcd"));
-        $dumpvars;
-    end
-    `endif
-endmodule
+      // Overflow
+      when(sigDiff === prodT(width - 1) && (prod(2 * width - 1, msb + 1) === 0.U || prod(2 * width - 1, msb + 1) === 1.U)) {
+        io.valid := true.B
+        io.ovf := false.B
+      } .otherwise {
+        io.valid := false.B
+        io.ovf := true.B
+      }
+    }
+  }
+
+  when(io.rst) {
+    state := State.idle
+    io.busy := false.B
+    io.done := false.B
+    io.valid := false.B
+    io.ovf := false.B
+    io.valOut := 0.S
+  }
+}
+
+/*object mul extends App {
+  chisel3.Driver.execute(args, () => new mul())
+}*/
+object mul extends App {
+  (new ChiselStage).execute(
+    Array[String]("--target-dir", "generated"),
+    Seq(ChiselGeneratorAnnotation(() => new mul))
+  )
+}
