@@ -26,12 +26,12 @@ module mul(
   wire        _GEN_1 = state == 2'h2;
   wire        _GEN_2 = _GEN | _GEN_0 | _GEN_1;
   wire        _GEN_3 = sigDiff == prodT[24] & (prod[49:46] == 4'h0 | prod[49:46] == 4'h1);
-  always @(posedge clock) begin
+  always @(posedge clk) begin
     automatic logic _GEN_4;
     automatic logic _GEN_5;
-    _GEN_4 = _GEN & io_start;
+    _GEN_4 = _GEN & start;
     _GEN_5 = _GEN | _GEN_0 | ~_GEN_1;
-    if (reset) begin
+    if (rst) begin
       sigDiff <= 1'h0;
       round <= 1'h0;
       even <= 1'h0;
@@ -39,9 +39,9 @@ module mul(
     end
     else begin
       automatic logic [3:0][1:0] _GEN_6 =
-        {{2'h0}, {2'h3}, {2'h2}, {io_start ? 2'h1 : state}};
+        {{2'h0}, {2'h3}, {2'h2}, {start ? 2'h1 : state}};
       if (_GEN_4)
-        sigDiff <= io_a[24] ^ io_b[24];
+        sigDiff <= a[24] ^ b[24];
       if (_GEN_5) begin
       end
       else begin
@@ -51,8 +51,8 @@ module mul(
       state <= _GEN_6[state];
     end
     if (_GEN_4) begin
-      a1 <= io_a;
-      b1 <= io_b;
+      a1 <= a;
+      b1 <= b;
     end
     if (_GEN_5) begin
     end
@@ -67,11 +67,11 @@ module mul(
     else
       rbits <= prod[20:0];
   end // always @(posedge)
-  assign io_busy = _GEN & io_start;
-  assign io_done = ~_GEN_2 & (&state);
-  assign io_valid = ~_GEN_2 & (&state) & _GEN_3;
-  assign io_ovf = ~_GEN_2 & (&state) & ~_GEN_3;
-  assign io_valOut =
+  assign busy = _GEN & start;
+  assign done = ~_GEN_2 & (&state);
+  assign valid = ~_GEN_2 & (&state) & _GEN_3;
+  assign ovf = ~_GEN_2 & (&state) & ~_GEN_3;
+  assign val =
     _GEN_2 | ~(&state)
       ? 25'h0
       : round & ~(even & rbits == 21'h100000) ? prodT + 25'h1 : prodT;
