@@ -76,4 +76,3 @@ module mul(
       ? 25'h0
       : round & ~(even & rbits == 21'h100000) ? prodT + 25'h1 : prodT;
 endmodule
-
