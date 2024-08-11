@@ -28,21 +28,21 @@ module mandelbrot #(
     // fixed-point multiplication module
     logic signed [FP_WIDTH-1:0] mul_a, mul_b, mul_val, mul_val_p;
     logic mul_start, mul_done;
-    mul #(.WIDTH(FP_WIDTH), .FBITS(FP_WIDTH - FP_INT)) mul_inst (
+    mul #() mul_inst (
         .clk,
         .rst,
-        .start(mul_start),
+        .io_start(mul_start),
         /* verilator lint_off PINCONNECTEMPTY */
-        .busy(),
+        .io_busy(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .done(mul_done),
+        .io_done(mul_done),
         /* verilator lint_off PINCONNECTEMPTY */
-        .valid(),
+        .io_valid(),
         .ovf(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .a(mul_a),
-        .b(mul_b),
-        .val(mul_val)
+        .io_a(mul_a),
+        .io_b(mul_b),
+        .io_val(mul_val)
     );
 
     /* verilator lint_off UNUSED */
