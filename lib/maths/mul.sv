@@ -29,7 +29,7 @@ module mul(
   always @(posedge clock) begin
     automatic logic _GEN_4;
     automatic logic _GEN_5;
-    _GEN_4 = _GEN & start;
+    _GEN_4 = _GEN & io_start;
     _GEN_5 = _GEN | _GEN_0 | ~_GEN_1;
     if (reset) begin
       sigDiff <= 1'h0;
