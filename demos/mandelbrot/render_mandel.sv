@@ -147,8 +147,8 @@ module render_mandel #(
     // sample 00 (top-left)
     mandelbrot #(
     ) mandelbrot_inst_00 (
-        .clock(clk),
-        .reset(rst),
+        .clk,
+        .rst,
         .io_start(calc_start),
         .io_re(fx_left),
         .io_im(fy_top),
@@ -162,8 +162,8 @@ module render_mandel #(
     // sample 01 (bottom-left)
     mandelbrot #(
     ) mandelbrot_inst_01 (
-        .clock(clk),
-        .reset(rst),
+        .clk,
+        .rst,
         .io_start(calc_start),
         .io_re(fx_left),
         .io_im(fy_bottom),
@@ -177,8 +177,8 @@ module render_mandel #(
     // sample 10 (bottom-right)
     mandelbrot #(
     ) mandelbrot_inst_10 (
-        .clock(clk),
-        .reset(rst),
+        .clk,
+        .rst,
         .io_start(calc_start),
         .io_re(fx_right),
         .io_im(fy_bottom),
@@ -192,8 +192,8 @@ module render_mandel #(
     // sample 11 (top-right)
     mandelbrot #(
     ) mandelbrot_inst_11 (
-        .clock(clk),
-        .reset(rst),
+        .clk,
+        .rst,
         .io_start(calc_start),
         .io_re(fx_right),
         .io_im(fy_top),
