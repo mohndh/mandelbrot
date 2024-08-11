@@ -29,8 +29,8 @@ module mandelbrot #(
     logic signed [FP_WIDTH-1:0] mul_a, mul_b, mul_val, mul_val_p;
     logic mul_start, mul_done;
     mul #() mul_inst (
-        .clk,
-        .rst,
+        .clock(clk),
+        .reset(rst),
         .io_start(mul_start),
         /* verilator lint_off PINCONNECTEMPTY */
         .io_busy(),
