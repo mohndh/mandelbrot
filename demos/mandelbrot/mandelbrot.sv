@@ -42,7 +42,7 @@ module mandelbrot #(
         /* verilator lint_on PINCONNECTEMPTY */
         .io_a(mul_a),
         .io_b(mul_b),
-        .io_val(mul_val)
+        .io_valOut(mul_val)
     );
 
     /* verilator lint_off UNUSED */
