@@ -9,7 +9,7 @@ module mul(
                 io_ovf,
   input  [24:0] io_a,
                 io_b,
-  output [24:0] io_val
+  output [24:0] io_valOut
 );
 
   reg         sigDiff;
@@ -39,7 +39,7 @@ module mul(
     end
     else begin
       automatic logic [3:0][1:0] _GEN_6 =
-      {{2'h0}, {2'h3}, {2'h2}, {io_start ? 2'h1 : state}};
+        {{2'h0}, {2'h3}, {2'h2}, {io_start ? 2'h1 : state}};
       if (_GEN_4)
         sigDiff <= io_a[24] ^ io_b[24];
       if (_GEN_5) begin
@@ -71,8 +71,9 @@ module mul(
   assign io_done = ~_GEN_2 & (&state);
   assign io_valid = ~_GEN_2 & (&state) & _GEN_3;
   assign io_ovf = ~_GEN_2 & (&state) & ~_GEN_3;
-  assign io_val =
+  assign io_valOut =
     _GEN_2 | ~(&state)
       ? 25'h0
       : round & ~(even & rbits == 21'h100000) ? prodT + 25'h1 : prodT;
 endmodule
+
