@@ -31,18 +31,18 @@ module mandelbrot #(
     mul #() mul_inst (
         .clk,
         .rst,
-        .io_start(mul_start),
+        .start(mul_start),
         /* verilator lint_off PINCONNECTEMPTY */
-        .io_busy(),
+        .busy(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .io_done(mul_done),
+        .done(mul_done),
         /* verilator lint_off PINCONNECTEMPTY */
-        .io_valid(),
+        .valid(),
         .ovf(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .io_a(mul_a),
-        .io_b(mul_b),
-        .io_val(mul_val)
+        .a(mul_a),
+        .b(mul_b),
+        .val(mul_val)
     );
 
     /* verilator lint_off UNUSED */
