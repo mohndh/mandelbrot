@@ -146,9 +146,6 @@ module render_mandel #(
 
     // sample 00 (top-left)
     mandelbrot #(
-        .FP_WIDTH(FP_WIDTH),
-        .FP_INT(FP_INT),
-        .ITER_MAX(ITER_MAX)
     ) mandelbrot_inst_00 (
         .clock,
         .reset,
@@ -164,9 +161,6 @@ module render_mandel #(
 
     // sample 01 (bottom-left)
     mandelbrot #(
-        .FP_WIDTH(FP_WIDTH),
-        .FP_INT(FP_INT),
-        .ITER_MAX(ITER_MAX)
     ) mandelbrot_inst_01 (
         .clock,
         .reset,
@@ -182,9 +176,6 @@ module render_mandel #(
 
     // sample 10 (bottom-right)
     mandelbrot #(
-        .FP_WIDTH(FP_WIDTH),
-        .FP_INT(FP_INT),
-        .ITER_MAX(ITER_MAX)
     ) mandelbrot_inst_10 (
         .clock,
         .reset,
@@ -200,9 +191,6 @@ module render_mandel #(
 
     // sample 11 (top-right)
     mandelbrot #(
-        .FP_WIDTH(FP_WIDTH),
-        .FP_INT(FP_INT),
-        .ITER_MAX(ITER_MAX)
     ) mandelbrot_inst_11 (
         .clock,
         .reset,
