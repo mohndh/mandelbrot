@@ -5,7 +5,7 @@
 // Is (re,im) in the Mandelbrot set?
 
 `default_nettype none
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 module mandelbrot #(
     parameter FP_WIDTH=25,   // total width of fixed-point number: integer + fractional bits
