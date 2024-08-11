@@ -3,7 +3,7 @@
 // Learn more at https://projectf.io/posts/mandelbrot-set-verilog/
 
 `default_nettype none
-//`timescale 1ns / 1ps
+`timescale 1ns / 1ps
 
 module render_mandel #(
     parameter CORDW=16,       // signed coordinate width (bits)
@@ -146,62 +146,74 @@ module render_mandel #(
 
     // sample 00 (top-left)
     mandelbrot #(
+        .FP_WIDTH(FP_WIDTH),
+        .FP_INT(FP_INT),
+        .ITER_MAX(ITER_MAX)
     ) mandelbrot_inst_00 (
         .clk,
         .rst,
-        .io_start(calc_start),
-        .io_re(fx_left),
-        .io_im(fy_top),
-        .io_iter(iter_00),
+        .start(calc_start),
+        .re(fx_left),
+        .im(fy_top),
+        .iter(iter_00),
         /* verilator lint_off PINCONNECTEMPTY */
-        .io_calculating(),
+        .calculating(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .io_done(calc_done_00w)
+        .done(calc_done_00w)
     );
 
     // sample 01 (bottom-left)
     mandelbrot #(
+        .FP_WIDTH(FP_WIDTH),
+        .FP_INT(FP_INT),
+        .ITER_MAX(ITER_MAX)
     ) mandelbrot_inst_01 (
         .clk,
         .rst,
-        .io_start(calc_start),
-        .io_re(fx_left),
-        .io_im(fy_bottom),
-        .io_iter(iter_01),
+        .start(calc_start),
+        .re(fx_left),
+        .im(fy_bottom),
+        .iter(iter_01),
         /* verilator lint_off PINCONNECTEMPTY */
-        .io_calculating(),
+        .calculating(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .io_done(calc_done_01w)
+        .done(calc_done_01w)
     );
 
     // sample 10 (bottom-right)
     mandelbrot #(
+        .FP_WIDTH(FP_WIDTH),
+        .FP_INT(FP_INT),
+        .ITER_MAX(ITER_MAX)
     ) mandelbrot_inst_10 (
         .clk,
         .rst,
-        .io_start(calc_start),
-        .io_re(fx_right),
-        .io_im(fy_bottom),
-        .io_iter(iter_10),
+        .start(calc_start),
+        .re(fx_right),
+        .im(fy_bottom),
+        .iter(iter_10),
         /* verilator lint_off PINCONNECTEMPTY */
-        .io_calculating(),
+        .calculating(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .io_done(calc_done_10w)
+        .done(calc_done_10w)
     );
 
     // sample 11 (top-right)
     mandelbrot #(
+        .FP_WIDTH(FP_WIDTH),
+        .FP_INT(FP_INT),
+        .ITER_MAX(ITER_MAX)
     ) mandelbrot_inst_11 (
         .clk,
         .rst,
-        .io_start(calc_start),
-        .io_re(fx_right),
-        .io_im(fy_top),
-        .io_iter(iter_11),
+        .start(calc_start),
+        .re(fx_right),
+        .im(fy_top),
+        .iter(iter_11),
         /* verilator lint_off PINCONNECTEMPTY */
-        .io_calculating(),
+        .calculating(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .io_done(calc_done_11w)
+        .done(calc_done_11w)
     );
 
     always_comb done = (state == DONE);
