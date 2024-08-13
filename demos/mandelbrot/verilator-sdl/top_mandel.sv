@@ -3,7 +3,7 @@
 // Learn more at https://projectf.io/posts/mandelbrot-set-verilog/
 
 `default_nettype none
-//`timescale 1ns / 1ps
+`timescale 1ns / 1ps
 
 module top_mandel #(parameter CORDW=16) (  // signed coordinate width (bits)
     input  wire logic clk_pix,      // pixel clock
