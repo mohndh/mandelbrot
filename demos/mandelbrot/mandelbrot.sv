@@ -7,17 +7,16 @@
 `default_nettype none
 `timescale 1ns / 1ps
 
-module mandelbrot #(
-    parameter ITERW=$clog2(256)  // maximum iteration width (bits)
-    ) (
-    input  wire logic clk,    // clock
-    input  wire logic rst,    // reset
-    input  wire logic start,  // start calculation
-    input  wire logic signed [25-1:0] re, im,  // coordinate
-    output      logic [ITERW-1:0] iter,  // iterations
-    output      logic calculating,  // calculation in progress
-    output      logic done  // calculation complete (high for one tick)
-    );
+module mandelbrot(
+  input         clk,
+                rst,
+                start,
+  input  [24:0] re,
+                im,
+  output [7:0]  iter,
+  output        calculating,
+                done
+);
 
   wire        _mulModule_io_done;
   wire [24:0] _mulModule_io_valOut;
