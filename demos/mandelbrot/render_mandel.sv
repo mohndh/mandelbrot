@@ -146,58 +146,58 @@ module render_mandel #(
 
     // sample 00 (top-left)
     mandelbrot #() mandelbrot_inst_00 (
-        .clk,
-        .rst,
-        .start(calc_start),
-        .re(fx_left),
-        .im(fy_top),
-        .iter(iter_00),
+        .clock(clk),
+        .reset(rst),
+        .io_start(calc_start),
+        .io_re(fx_left),
+        .io_im(fy_top),
+        .io_iter(iter_00),
         /* verilator lint_off PINCONNECTEMPTY */
-        .calculating(),
+        .io_calculating(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .done(calc_done_00w)
+        .io_done(calc_done_00w)
     );
 
     // sample 01 (bottom-left)
     mandelbrot #() mandelbrot_inst_01 (
-        .clk,
-        .rst,
-        .start(calc_start),
-        .re(fx_left),
-        .im(fy_bottom),
-        .iter(iter_01),
+        .clock(clk),
+        .reset(rst),
+        .io_start(calc_start),
+        .io_re(fx_left),
+        .io_im(fy_bottom),
+        .io_iter(iter_01),
         /* verilator lint_off PINCONNECTEMPTY */
-        .calculating(),
+        .io_calculating(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .done(calc_done_01w)
+        .io_done(calc_done_01w)
     );
 
     // sample 10 (bottom-right)
     mandelbrot #() mandelbrot_inst_10 (
-        .clk,
-        .rst,
-        .start(calc_start),
-        .re(fx_right),
-        .im(fy_bottom),
-        .iter(iter_10),
+        .clock(clk),
+        .reset(rst),
+        .io_start(calc_start),
+        .io_re(fx_right),
+        .io_im(fy_bottom),
+        .io_iter(iter_10),
         /* verilator lint_off PINCONNECTEMPTY */
-        .calculating(),
+        .io_calculating(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .done(calc_done_10w)
+        .io_done(calc_done_10w)
     );
 
     // sample 11 (top-right)
     mandelbrot #() mandelbrot_inst_11 (
-        .clk,
-        .rst,
-        .start(calc_start),
-        .re(fx_right),
-        .im(fy_top),
-        .iter(iter_11),
+        .clock(clk),
+        .reset(rst),
+        .io_start(calc_start),
+        .io_re(fx_right),
+        .io_im(fy_top),
+        .io_iter(iter_11),
         /* verilator lint_off PINCONNECTEMPTY */
-        .calculating(),
+        .io_calculating(),
         /* verilator lint_on PINCONNECTEMPTY */
-        .done(calc_done_11w)
+        .io_done(calc_done_11w)
     );
 
     always_comb done = (state == DONE);
