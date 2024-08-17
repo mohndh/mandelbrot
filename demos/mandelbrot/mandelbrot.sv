@@ -182,6 +182,9 @@ module mandelbrot #(
     .done   (_mulModule_io_done),
     .a      (mulA),
     .b      (mulB),
+    .ovf(),
+    .busy(),
+    .valid(),  
     .val (_mulModule_io_valOut)
   );
     assign io_iter = iter;
