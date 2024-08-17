@@ -155,10 +155,10 @@ module mandelbrot(
          {io_iter},
          {io_iter},
          {io_iter},
-         {io_start ? 8'h0 : io_iter}};
+         {start ? 8'h0 : io_iter}};
       io_iter <= _GEN_17[state];
       if (_GEN)
-        io_calculating <= io_start | io_calculating;
+        io_calculating <= start | io_calculating;
       else
         io_calculating <= (~_GEN_0 | _GEN_1) & io_calculating;
       if (_GEN | ~_GEN_0) begin
