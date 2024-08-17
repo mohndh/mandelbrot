@@ -7,8 +7,8 @@
 `timescale 1ns / 1ps
 
 module mul #(
-    parameter WIDTH=8,  // width of numbers in bits (integer and fractional)
-    parameter FBITS=4   // fractional bits within WIDTH
+    parameter WIDTH=25,  // width of numbers in bits (integer and fractional)
+    parameter FBITS=21   // fractional bits within WIDTH
     ) (
     input wire logic clk,    // clock
     input wire logic rst,    // reset
