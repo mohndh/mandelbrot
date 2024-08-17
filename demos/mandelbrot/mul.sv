@@ -13,10 +13,10 @@ module mul #(
     input wire logic clk,    // clock
     input wire logic rst,    // reset
     input wire logic start,  // start calculation
-    output     logic busy,   // calculation in progress
+    //output     logic busy,   // calculation in progress
     output     logic done,   // calculation is complete (high for one tick)
-    output     logic valid,  // result is valid
-    output     logic ovf,    // overflow
+    //output     logic valid,  // result is valid
+    //output     logic ovf,    // overflow
     input wire logic signed [WIDTH-1:0] a,   // multiplier (factor)
     input wire logic signed [WIDTH-1:0] b,   // mutiplicand (factor)
     output     logic signed [WIDTH-1:0] val  // result value: product
@@ -57,7 +57,7 @@ module mul #(
             end
             ROUND: begin  // round half to even
                 state <= IDLE;
-                busy <= 0;
+                //busy <= 0;
                 done <= 1;
 
                 // Gaussian rounding
@@ -67,11 +67,11 @@ module mul #(
                 if (sig_diff == prod_t[WIDTH-1+:1] &&  // compare input and answer sign
                     (prod[2*WIDTH-1:MSB+1] == '0 || prod[2*WIDTH-1:MSB+1] == '1)  // overflow bits
                 ) begin
-                    valid <= 1;
-                    ovf <= 0;
+                    //valid <= 1;
+                    //ovf <= 0;
                 end else begin
-                    valid <= 0;
-                    ovf <= 1;
+                    //valid <= 0;
+                    //ovf <= 1;
                 end
             end
             default: begin
@@ -80,17 +80,17 @@ module mul #(
                     a1 <= a;  // register input a
                     b1 <= b;  // register input b
                     sig_diff <= (a[WIDTH-1+:1] ^ b[WIDTH-1+:1]);  // register input sign difference
-                    busy <= 1;
-                    ovf <= 0;
+                    //busy <= 1;
+                    //ovf <= 0;
                 end
             end
         endcase
         if (rst) begin
             state <= IDLE;
-            busy <= 0;
+            //busy <= 0;
             done <= 0;
-            valid <= 0;
-            ovf <= 0;
+            //valid <= 0;
+            //ovf <= 0;
             val <= 0;
         end
     end
