@@ -34,9 +34,9 @@ module mandelbrot #(
   reg  [24:0] xt;
   reg  [24:0] xy2;
   reg  [2:0]  state;
-  reg  [7:0]  iter;
-  reg         calculating;
-  reg         done;
+  reg  [7:0]  io_iter;
+  reg         io_calculating;
+  reg         io_done;
   always @(posedge clk) begin
     automatic logic             _GEN;
     automatic logic             _GEN_0;
@@ -54,7 +54,7 @@ module mandelbrot #(
     automatic logic [7:0][24:0] _GEN_12;
     _GEN = state == 3'h0;
     _GEN_0 = state == 3'h1;
-    _GEN_1 = $signed(xy2[24:21]) < 4'sh5 & iter != 8'hFF;
+      _GEN_1 = $signed(xy2[24:21]) < 4'sh5 & io_iter != 8'hFF;
     _GEN_2 = state == 3'h2;
     _GEN_3 = _GEN_2 & _mulModule_io_done;
     _GEN_4 = state == 3'h3;
@@ -134,9 +134,9 @@ module mandelbrot #(
     xy2 <= _GEN_12[state];
     if (rst) begin
       state <= 3'h0;
-      iter <= 8'h0;
-      calculating <= 1'h0;
-      done <= 1'h0;
+      io_iter <= 8'h0;
+      io_calculating <= 1'h0;
+      io_done <= 1'h0;
     end
     else begin
       automatic logic [2:0]      _GEN_14;
@@ -144,7 +144,7 @@ module mandelbrot #(
       automatic logic [7:0][2:0] _GEN_16;
       automatic logic [7:0][7:0] _GEN_17;
       _GEN_14 = _GEN_7 ? 3'h1 : state;
-      _GEN_15 = _GEN_8 ? iter : iter + 8'h1;
+      _GEN_15 = _GEN_8 ? io_iter : io_iter + 8'h1;
       _GEN_16 =
         {{_GEN_14},
          {_GEN_14},
@@ -159,20 +159,20 @@ module mandelbrot #(
         {{_GEN_15},
          {_GEN_15},
          {_GEN_15},
-         {iter},
-         {iter},
-         {iter},
-         {iter},
-         {start ? 8'h0 : iter}};
-      iter <= _GEN_17[state];
+         {io_iter},
+         {io_iter},
+         {io_iter},
+         {io_iter},
+         {start ? 8'h0 : io_iter}};
+      io_iter <= _GEN_17[state];
       if (_GEN)
-        calculating <= start | calculating;
+        io_calculating <= start | io_calculating;
       else
-        calculating <= (~_GEN_0 | _GEN_1) & calculating;
+        io_calculating <= (~_GEN_0 | _GEN_1) & io_calculating;
       if (_GEN | ~_GEN_0) begin
       end
       else
-        done <= ~_GEN_1;
+        io_done <= ~_GEN_1;
     end
   end // always @(posedge)
   mul mulModule (
@@ -184,5 +184,8 @@ module mandelbrot #(
     .b      (mulB),
     .val (_mulModule_io_valOut)
   );
+    assign io_iter = iter;
+    assign io_calculating = calculating;
+    assign io_done = done;
 endmodule
 
