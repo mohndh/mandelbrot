@@ -8,27 +8,24 @@
 `timescale 1ns / 1ps
 
 module mandelbrot #(
-    parameter FP_WIDTH=25,   // total width of fixed-point number: integer + fractional bits
-    parameter FP_INT=4,      // integer bits in fixed-point number
-    parameter ITER_MAX=255,  // maximum number of interations
-    parameter ITERW=$clog2(ITER_MAX+1)  // maximum iteration width (bits)
+    parameter ITERW=$clog2(256)  // maximum iteration width (bits)
     ) (
     input  wire logic clk,    // clock
     input  wire logic rst,    // reset
     input  wire logic start,  // start calculation
-    input  wire logic signed [FP_WIDTH-1:0] re, im,  // coordinate
+    input  wire logic signed [25-1:0] re, im,  // coordinate
     output      logic [ITERW-1:0] iter,  // iterations
     output      logic calculating,  // calculation in progress
     output      logic done  // calculation complete (high for one tick)
     );
 
     // intermediate values
-    logic signed [FP_WIDTH-1:0] x0, y0, x2, y2, x, y;
+    logic signed [25-1:0] x0, y0, x2, y2, x, y;
 
     // fixed-point multiplication module
-    logic signed [FP_WIDTH-1:0] mul_a, mul_b, mul_val, mul_val_p;
+    logic signed [25-1:0] mul_a, mul_b, mul_val, mul_val_p;
     logic mul_start, mul_done;
-    mul #(.WIDTH(FP_WIDTH), .FBITS(FP_WIDTH - FP_INT)) mul_inst (
+    mul #(.WIDTH(25), .FBITS(25 - 4)) mul_inst (
         .clk,
         .rst,
         .start(mul_start),
@@ -46,7 +43,7 @@ module mandelbrot #(
     );
 
     /* verilator lint_off UNUSED */
-    logic signed [FP_WIDTH-1:0] xt, xy2;  // temporaries
+    logic signed [25-1:0] xt, xy2;  // temporaries
     /* verilator lint_on UNUSED */
 
     enum {IDLE, STEP1, STEP2, STEP2A, STEP3, STEP4} state;
@@ -54,7 +51,7 @@ module mandelbrot #(
         done <= 0;
         case (state)
             STEP1: begin
-                if ((xy2[FP_WIDTH-1-:FP_INT] <= 4) && (iter < ITER_MAX)) begin
+                if ((xy2[25-1-:4] <= 4) && (iter < 255)) begin
                     state <= STEP2;
                     mul_a <= x;
                     mul_b <= y;
