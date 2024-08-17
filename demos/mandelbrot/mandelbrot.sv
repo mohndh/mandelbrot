@@ -168,8 +168,8 @@ module mandelbrot(
     end
   end // always @(posedge)
   mul mulModule (
-    .clk     (clk),
-    .rst     (rst),
+    .clk,
+    .rst,
     .start  (mulStart),
     .done   (_mulModule_io_done),
     .a      (mulA),
