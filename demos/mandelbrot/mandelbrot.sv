@@ -1,12 +1,3 @@
-// Project F: Fixed-Point Mandelbrot Set
-// (C)2023 Will Green, open source hardware released under the MIT License
-// Learn more at https://projectf.io/posts/mandelbrot-set-verilog/
-
-// Is (re,im) in the Mandelbrot set?
-
-`default_nettype none
-`timescale 1ns / 1ps
-
 module mandelbrot(
   input         clk,
                 rst,
@@ -53,7 +44,7 @@ module mandelbrot(
     automatic logic [7:0][24:0] _GEN_12;
     _GEN = state == 3'h0;
     _GEN_0 = state == 3'h1;
-      _GEN_1 = $signed(xy2[24:21]) < 4'sh5 & io_iter != 8'hFF;
+    _GEN_1 = $signed(xy2[24:21]) < 4'sh5 & io_iter != 8'hFF;
     _GEN_2 = state == 3'h2;
     _GEN_3 = _GEN_2 & _mulModule_io_done;
     _GEN_4 = state == 3'h3;
@@ -162,10 +153,10 @@ module mandelbrot(
          {io_iter},
          {io_iter},
          {io_iter},
-         {start ? 8'h0 : io_iter}};
+         {io_start ? 8'h0 : io_iter}};
       io_iter <= _GEN_17[state];
       if (_GEN)
-        io_calculating <= start | io_calculating;
+        io_calculating <= io_start | io_calculating;
       else
         io_calculating <= (~_GEN_0 | _GEN_1) & io_calculating;
       if (_GEN | ~_GEN_0) begin
@@ -181,13 +172,10 @@ module mandelbrot(
     .done   (_mulModule_io_done),
     .a      (mulA),
     .b      (mulB),
-    .ovf(),
-    .busy(),
-    .valid(),  
     .val (_mulModule_io_valOut)
   );
-    assign io_iter = iter;
-    assign io_calculating = calculating;
-    assign io_done = done;
+  assign io_iter = iter;
+  assign io_calculating = calculating;
+  assign io_done = done;
 endmodule
 
