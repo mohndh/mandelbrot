@@ -180,7 +180,7 @@ module mandelbrot #(
     .rst     (rst),
     .start  (mulStart),
     .done   (_mulModule_io_done),
-    .ia      (mulA),
+    .a      (mulA),
     .b      (mulB),
     .val (_mulModule_io_valOut)
   );
