@@ -3,7 +3,7 @@
 // Learn more at https://projectf.io
 
 `default_nettype none
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 // Generate 74.0 MHz (1280x720 59.8Hz) with 25 MHz input clock
 // ECP5 PLLs are documented in Lattice TN02200 and FPGA Libraries Reference Guide
