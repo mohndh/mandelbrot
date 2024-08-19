@@ -3,7 +3,7 @@
 // Learn more at https://projectf.io
 
 `default_nettype none
-`timescale 1ns / 1ps
+//`timescale 1ns / 1ps
 
 // Generate 25.125 MHz (640x480 59.8 Hz) with 12 MHz input clock
 // iCE40 PLLs are documented in Lattice TN1251 and ICE Technology Library
